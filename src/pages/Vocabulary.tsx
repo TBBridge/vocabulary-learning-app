@@ -26,10 +26,11 @@ export default function Vocabulary() {
   const fetchVocabularies = async () => {
     if (!user) return;
     try {
+      // 获取所有共享词库（is_public = true）和用户自己的词库
       const { data, error } = await supabase
         .from('vocabularies')
         .select('*')
-        .eq('user_id', user.id)
+        .or(`is_public.eq.true,user_id.eq.${user.id}`)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -70,14 +71,15 @@ export default function Vocabulary() {
     setImportLoading(true);
 
     try {
-      // 1. Create Vocabulary
+      // 1. Create Vocabulary (默认设置为公共词库)
       const { data: vocabData, error: vocabError } = await supabase
         .from('vocabularies')
         .insert([{
           user_id: user.id,
           name: name,
           word_count: 0,
-          progress: 0
+          progress: 0,
+          is_public: true  // 设置为公共词库，所有用户可见
         }])
         .select()
         .single();

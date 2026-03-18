@@ -40,11 +40,14 @@ export default function Learn() {
 
   const dayCount = builtinWords.length;
 
-  // Fetch custom vocabularies
+  // Fetch custom vocabularies (包括共享词库)
   useEffect(() => {
     async function fetchVocabs() {
       if (!user) return;
-      const { data } = await supabase.from('vocabularies').select('id, name').eq('user_id', user.id);
+      const { data } = await supabase
+        .from('vocabularies')
+        .select('id, name')
+        .or(`is_public.eq.true,user_id.eq.${user.id}`);
       if (data && data.length > 0) {
         setVocabularies(data);
         setSelectedVocab(data[0].id);
