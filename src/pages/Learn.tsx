@@ -231,17 +231,17 @@ export default function Learn() {
 
       return (
         <div className="max-w-4xl mx-auto space-y-6">
-          <div className="flex justify-between items-center">
-            <Title level={2}>每日单词学习</Title>
-            <Select
-              value={mode}
-              style={{ width: 160 }}
-              onChange={(v) => { setMode(v); setLearningWords([]); }}
-            >
-              <Option value="builtin">内置词库</Option>
-              <Option value="custom">自定义词库</Option>
-            </Select>
-          </div>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <Title level={2} className="mb-0">每日单词学习</Title>
+        <Select
+          value={mode}
+          style={{ width: 160 }}
+          onChange={(v) => { setMode(v); setLearningWords([]); }}
+        >
+          <Option value="builtin">内置词库</Option>
+          <Option value="custom">自定义词库</Option>
+        </Select>
+      </div>
 
           <Card className="shadow-sm" title={`学习进度 (${dayProgresses.reduce((a, b) => a + b.mastered, 0)} / ${dayCount * 25})`}>
             <Progress percent={Math.round(dayProgresses.reduce((a, b) => a + b.mastered, 0) / (dayCount * 25) * 100)} />
@@ -382,14 +382,14 @@ export default function Learn() {
   const currentWord = learningWords[currentIndex];
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <div className="flex justify-between items-center">
-        <Title level={2}>
+    <div className="max-w-3xl mx-auto space-y-4 md:space-y-6">
+      <div className="flex flex-col gap-4">
+        <Title level={2} className="mb-0">
           {mode === 'builtin' ? `Day ${selectedDay}` : '单词学习'}
         </Title>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-2">
           {mode === 'builtin' && (
-            <Select value={selectedDay} style={{ width: 180 }} onChange={setSelectedDay}>
+            <Select value={selectedDay} style={{ width: '100%' }} onChange={setSelectedDay} className="md:w-auto md:min-w-[180px]">
               {builtinWords.map(d => (
                 <Option key={d.day} value={d.day}>
                   Day {d.day} - {isDayComplete(d.day) ? '✅' : isDayStarted(d.day) ? '🔄' : '📖'} {d.theme}
@@ -398,13 +398,13 @@ export default function Learn() {
             </Select>
           )}
           {mode === 'custom' && (
-            <Select value={selectedVocab} style={{ width: 200 }} onChange={setSelectedVocab}>
+            <Select value={selectedVocab} style={{ width: '100%' }} onChange={setSelectedVocab} className="md:w-auto md:min-w-[200px]">
               {vocabularies.map(v => (
                 <Option key={v.id} value={v.id}>{v.name}</Option>
               ))}
             </Select>
           )}
-          <Select value={mode} style={{ width: 120 }} onChange={(v) => { setMode(v); setLearningWords([]); setSessionComplete(false); }}>
+          <Select value={mode} style={{ width: '100%' }} onChange={(v) => { setMode(v); setLearningWords([]); setSessionComplete(false); }} className="md:w-auto md:w-32">
             <Option value="builtin">内置词库</Option>
             <Option value="custom">自定义词库</Option>
           </Select>
@@ -429,10 +429,10 @@ export default function Learn() {
         strokeColor={{ from: '#108ee9', to: '#87d068' }}
       />
 
-      <Card className="shadow-md min-h-[400px] flex flex-col justify-center relative">
-        <div className="text-center space-y-6">
+      <Card className="shadow-md min-h-[300px] md:min-h-[400px] flex flex-col justify-center relative">
+        <div className="text-center space-y-4 md:space-y-6">
           <div>
-            <Title level={1} className="mb-2">{currentWord.word}</Title>
+            <Title level={2} className="mb-2 md:text-4xl">{currentWord.word}</Title>
             <div className="flex justify-center items-center space-x-2 text-gray-500 text-lg">
               <span>{currentWord.phonetic && `[${currentWord.phonetic}]`}</span>
               <Button
@@ -474,26 +474,26 @@ export default function Learn() {
       </Card>
 
       {showAnswer && (
-        <Row gutter={16} className="mt-6">
-          <Col span={12}>
+        <Row gutter={[16, 16]} className="mt-6">
+          <Col xs={24} sm={12}>
             <Button
               block
               size="large"
               danger
               icon={<CloseOutlined />}
               onClick={() => handleNext('learning')}
-              className="h-12 text-lg"
+              className="h-12 md:h-14 text-base md:text-lg"
               loading={marking}
             >
               不认识
             </Button>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={12}>
             <Button
               block
               size="large"
               type="primary"
-              className="bg-green-500 hover:bg-green-600 h-12 text-lg border-none"
+              className="bg-green-500 hover:bg-green-600 h-12 md:h-14 text-base md:text-lg border-none"
               icon={<CheckOutlined />}
               onClick={() => handleNext('mastered')}
               loading={marking}

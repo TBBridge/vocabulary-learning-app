@@ -199,13 +199,15 @@ export default function Vocabulary() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <Title level={2}>词库管理</Title>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <Title level={2} className="mb-0">词库管理</Title>
         <Button 
           type="primary" 
           icon={<PlusOutlined />} 
           onClick={() => setIsModalVisible(true)}
           size="large"
+          block
+          className="sm:w-auto"
         >
           导入新词库
         </Button>
@@ -218,6 +220,8 @@ export default function Vocabulary() {
           rowKey="id" 
           loading={loading}
           locale={{ emptyText: '暂无词库，请点击右上角导入' }}
+          scroll={{ x: 600 }}
+          className="responsive-table"
         />
       </Card>
 

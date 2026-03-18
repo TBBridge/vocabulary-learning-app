@@ -313,12 +313,12 @@ export default function Test() {
               const userAnswer = userAnswers[questions.indexOf(q)];
               return (
                 <div key={idx} className="mb-4 p-4 bg-red-50 rounded-lg border border-red-100">
-                  <Row gutter={16}>
-                    <Col span={12}>
+                  <Row gutter={[16, 16]}>
+                    <Col xs={24} sm={12}>
                       <div className="font-bold text-lg">{q.word}</div>
                       <div className="text-gray-500 text-sm">[{q.phonetic}]</div>
                     </Col>
-                    <Col span={12}>
+                    <Col xs={24} sm={12}>
                       <div className="text-red-500 mb-1">
                         你的选择: {userAnswer !== undefined ? q.options[userAnswer] : '未作答'}
                       </div>
@@ -446,19 +446,23 @@ export default function Test() {
 
         <Divider />
 
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <Button
             disabled={currentQIndex === 0}
             onClick={() => setCurrentQIndex(prev => prev - 1)}
+            block
+            className="sm:w-auto"
           >
             上一题
           </Button>
 
-          <Space>
+          <Space className="w-full sm:w-auto">
             {currentQIndex < questions.length - 1 ? (
               <Button
                 type="primary"
                 onClick={() => setCurrentQIndex(prev => prev + 1)}
+                block
+                className="sm:w-auto"
               >
                 下一题
               </Button>
@@ -469,6 +473,8 @@ export default function Test() {
                 size="large"
                 onClick={submitTest}
                 disabled={answeredCount < questions.length}
+                block
+                className="sm:w-auto"
               >
                 {answeredCount < questions.length
                   ? `还有 ${questions.length - answeredCount} 题未答`
@@ -477,7 +483,7 @@ export default function Test() {
             )}
           </Space>
 
-          <div className="w-16 text-right">
+          <div className="text-center sm:text-right">
             <Tag color="blue">{answeredCount}/{questions.length}</Tag>
           </div>
         </div>

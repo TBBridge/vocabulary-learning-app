@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+::root {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   line-height: 1.5;
   font-weight: 400;
@@ -11,4 +11,65 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* 响应式表格 - 移动端优化 */
+@media (max-width: 640px) {
+  .responsive-table .ant-table-thead > tr > th,
+  .responsive-table .ant-table-tbody > tr > td {
+    padding: 12px 8px;
+    font-size: 14px;
+  }
+  
+  .responsive-table .ant-table {
+    font-size: 14px;
+  }
+}
+
+/* 移动端卡片优化 */
+@media (max-width: 768px) {
+  .ant-card {
+    font-size: 14px;
+  }
+  
+  .ant-card-head-title {
+    font-size: 16px;
+  }
+  
+  .ant-btn-lg {
+    height: 40px;
+    padding: 4px 16px;
+  }
+  
+  .ant-typography h1 {
+    font-size: 24px !important;
+  }
+  
+  .ant-typography h2 {
+    font-size: 20px !important;
+  }
+  
+  .ant-typography h3 {
+    font-size: 18px !important;
+  }
+}
+
+/* 抽屉菜单优化 */
+.mobile-drawer .ant-drawer-body {
+  padding: 16px;
+}
+
+.mobile-drawer .ant-menu-vertical {
+  border: none;
+}
+
+.mobile-drawer .ant-menu-item {
+  height: 48px;
+  line-height: 48px;
+  margin: 4px 0;
+  border-radius: 8px;
+}
+
+.mobile-drawer .ant-menu-item-selected {
+  background-color: #e6f7ff;
 }
