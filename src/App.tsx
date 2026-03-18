@@ -10,6 +10,7 @@ import Vocabulary from './pages/Vocabulary';
 import Learn from './pages/Learn';
 import Test from './pages/Test';
 import Progress from './pages/Progress';
+import Admin from './pages/Admin';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="learn" element={<Learn />} />
             <Route path="test" element={<Test />} />
             <Route path="progress" element={<Progress />} />
+            <Route path="admin" element={<Admin />} />
           </Route>
           
           <Route path="*" element={<Navigate to="/" replace />} />
