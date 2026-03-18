@@ -77,7 +77,10 @@ export default function Layout() {
         </div>
         <div className="flex items-center">
           <span className="mr-4 text-gray-600">
-            你好, {user?.user_metadata?.name || user?.email}
+            你好, {user?.user_metadata?.name || user?.email?.split('@')[0] || '用户'}
+            {user?.user_metadata?.isGuest && (
+              <span className="ml-2 px-2 py-0.5 text-xs bg-orange-100 text-orange-600 rounded-full">游客</span>
+            )}
           </span>
           <Dropdown menu={userMenu} placement="bottomRight">
             <Avatar icon={<UserOutlined />} className="cursor-pointer bg-blue-500" />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Card, Typography, Alert, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Card, Typography, Alert, message, Divider } from 'antd';
+import { UserOutlined, LockOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
@@ -8,6 +8,7 @@ const { Title, Text } = Typography;
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
+  const [guestLoading, setGuestLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -37,6 +38,52 @@ export default function Login() {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  // 游客登录 - 使用匿名方式
+  const handleGuestLogin = async () => {
+    setGuestLoading(true);
+    setError(null);
+    try {
+      // 生成一个随机的游客邮箱和密码
+      const timestamp = Date.now();
+      const randomStr = Math.random().toString(36).substring(2, 8);
+      const guestEmail = `guest_${timestamp}_${randomStr}@vocabulary.app`;
+      const guestPassword = `Guest_${randomStr}_${timestamp}`;
+
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: guestEmail,
+        password: guestPassword,
+        options: {
+          data: {
+            name: `游客${randomStr.toUpperCase()}`,
+            isGuest: true,
+          },
+        },
+      });
+
+      if (signUpError) {
+        throw signUpError;
+      }
+
+      // 注册成功后立即登录
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: guestEmail,
+        password: guestPassword,
+      });
+
+      if (signInError) {
+        throw signInError;
+      }
+
+      message.success('游客登录成功');
+      navigate('/');
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || '游客登录失败，请稍后重试');
+    } finally {
+      setGuestLoading(false);
     }
   };
 
@@ -87,6 +134,22 @@ export default function Login() {
               登录
             </Button>
           </Form.Item>
+
+          <Divider>
+            <Text type="secondary" className="text-xs">或者</Text>
+          </Divider>
+
+          <Button
+            type="default"
+            block
+            size="large"
+            icon={<UserSwitchOutlined />}
+            loading={guestLoading}
+            onClick={handleGuestLogin}
+            className="mb-4"
+          >
+            游客登录（无需注册）
+          </Button>
 
           <div className="text-center">
             <Text>还没有账号？ <Link to="/register">立即注册</Link></Text>
